@@ -1,0 +1,7 @@
+#!/bin/bash
+
+erlc person.erl; 
+erlc proxy.erl;
+erlc test.erl;
+
+
