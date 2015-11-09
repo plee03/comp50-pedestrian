@@ -1,0 +1,26 @@
+Team Name: Pedestrians
+Members: Caitlin Klein and Peter Lee
+
+Modelling Foot Traffic 
+The project involves modelling pedestrian foot traffic on pathways such as
+the many pathways found at Tufts. Each person is their own process. Here
+concurrency models the real world.
+
+Minimum Deliverable: 
+  - working model that simulates foot traffic
+  - program outputs to a file who was on what path at particular times
+
+Maximum Deliverable: 
+  - model can be accessed while running to query number of people on each 
+    path / how often a path is used
+  - a visualization of the model
+  - additional data based on how people move about the pathways
+  - providing a file of people's schedules and creating a model based off 
+    those schedules
+
+First Step: researching erlang and python to find libraries or tools 
+that could help model paths or people such as a graph library
+
+Bigest Problem: synchronizing the people based on their schedules and the 
+timing associated with that
+
