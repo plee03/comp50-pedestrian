@@ -1,17 +1,24 @@
 % Person Module
 
 -module(person).
--export([start/2]).
--export([loop/2]).
+-export([start/1]).
+-export([loop/1]).
 
-start(Schedule, Init_Pos) -> 
-   spawn(person, loop, [Schedule, Init_Pos]).
+start(Schedule) -> 
+   spawn(person, loop, [Schedule]).
 
-loop(Schedule, {Location, Distance}) ->
-    receive
-        {From, _Time} -> From ! {self(), {Location, Distance}}
-    end,
-    % find next dest
-    % loop(NewSchedule, {path, Node, Dest, 1/weight
-    loop(Schedule, {Location, Distance}).
+%loop(Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) ->
+loop(Schedule) ->
+    io:format("~p: ~p\n", [self(), Schedule]).
+    %receive
+    %    {From, _Time} -> From ! {self(), {Location, Distance}}
+    %end,
+    %if lookup
+    %    New_Final_Loc = Value,
+    %    Map ! {next_path, self(), Current_Loc, New_Final_Loc},
+    %    receive
+    %        {next_loc, Next} -> New_Next_Loc = Next,
+    %    end,
+    %    Map ! {subscribe, self(), Current_Loc, New_Next_Loc
+
 
