@@ -1,0 +1,71 @@
+Team Pedestrians 
+Caitlin Klein and Peter Lee
+
+
+Overview
+
+    We are trying to model foot traffic over a period of time. There are 
+    several major components to do this. There are people who have a schedule 
+    they have to keep. There is a map which is modeled through a graph that 
+    contains nodes (destinations) and edges (paths) which have weights that 
+    correspond to distance. These weights will adjust according to the number 
+    of people on that path. So edges will have a minimum weight to represent 
+    distance and that number may increase to represent the increased amount 
+    of traffic. 
+
+Modules:
+
+    Person Module
+    description: models an individual, each person has a schedule and a
+                 current location
+    interactions: receives time from proxy returns current location
+                  sends current location and ultimate destination to map
+                  receives next node to go to 
+    
+    Map Module
+    description: models the map, contains destination nodes and edges
+                 connecting nodes along with weights, answers queries
+                 for next node a person has to go to, spawns processes
+                 to handle calculating next node
+    interactions: receives current location and ultimate destination 
+                  from person 
+                  sends next node to go to 
+
+    Proxy Module
+    description: acts as a proxy, pings each person telling them the current
+                 time and receives in return a current position, will either
+                 write that to a log or sent it off to be displayed in a 
+                 web page
+    interactions: sends time to person 
+                  receives current location
+
+Problem to Address
+    
+    The most interesting problem to address is a person querying the map
+    and finding out it's next position. Because the weights on the graph
+    change according to the amount of people currently on them, shortest
+    path can not just be calculated once as that could change depending on 
+    the volume of people. The map module also can't be a bottleneck for
+    the persons. Therefore map will receive messages from the persons and
+    spawn processes to calculate the next destination. A simple way to do
+    this is to just calculate the shortest path for each person every time
+    they have to make a decision about where to go. However, with a high
+    volume of nodes and people this could result in a large amount of 
+    potentially unnecessary computation. Alternatives to consider for 
+    optimization have been distributing this work over mulitple machines, 
+    breaking up the work to lessen the load on a single machine. However,
+    a better approach would be to optimize the shortest path algorithm 
+    to lessen the overall workload.
+
+Development Plan
+
+    Nov 15: person module, proxy module, map module
+    Nov 20: loader to set up the initial state of the program 
+    Nov 24: python program that generates datasets for schedules
+    Nov 29: visualization
+    Dec  6: optimization
+    if time permits: live updated visualization
+
+As a team of only two with some difficult architecture and decisions to be made
+we will primarily be working on code together.
+
