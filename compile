@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/usr/bin/bash
 
-erlc person.erl; 
-erlc proxy.erl;
-erlc test.erl;
-erlc ugraph.erl;
-
+for file in *.erl
+do 
+    erlc $file
+done
