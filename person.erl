@@ -42,7 +42,7 @@ loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance, 
             receive 
                 {New_Current_Loc, New_Next_Loc, New_Distance} -> {New_Current_Loc, New_Next_Loc, New_Distance}
             end,
-            Pid ! {subscribe, New_Next_Loc},
+            Pid ! {subscribe, New_Current_Loc},
             loop(arriving, Schedule, New_Current_Loc, New_Next_Loc, New_Final_Loc, 0, New_Distance, Pid);
         false -> 
             loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, 0, 0, Pid)
