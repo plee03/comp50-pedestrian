@@ -1,4 +1,0 @@
-{"Halligan", 12}.
-{"Braker", 1}.
-{"Pearson", 3}.
-
