@@ -4,11 +4,11 @@
 
 -module(ugraph).
 -export([new/0, add_edge/4, add_edge/5, add_vertex/2, add_vertex/3, edge/2,
-         vertex/2, vertices/1, shortest_path/3]).
+         vertex/2, vertices/1, shortest_path/3, update_edge/3]).
 
 new() -> digraph:new().
 
-add_vertex(G, V) -> add_vertex(G, V, V).
+add_vertex(G, V) -> digraph:add_vertex(G, V).
 
 add_vertex(G, V, Label) -> digraph:add_vertex(G, V, Label).
 
@@ -24,6 +24,9 @@ add_edge(G, E, V1, V2, Label) ->
     digraph:add_edge(G, E, V1, V2, Label),
     digraph:add_edge(G, E, V2, V1, Label).
 
+update_edge(G, E, Label) ->
+    {_, V1, V2, _} = edge(G, E),
+    add_edge(G, V1, V2, Label).
 
 edge(G, E) -> digraph:edge(G, E).
 

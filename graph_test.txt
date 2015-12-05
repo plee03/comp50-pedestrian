@@ -1,0 +1,8 @@
+halligan.
+braker.
+carmichael.
+dewick.
+{halligan, braker, 2, 5}.
+{braker, carmichael, 2, 5}.
+{halligan, carmichael, 5, 5}.
+{carmichael, dewick, 3, 5}.

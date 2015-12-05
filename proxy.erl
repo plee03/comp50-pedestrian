@@ -5,7 +5,7 @@
 -export([loop/2, update_loc/2]).
 
 start(List) -> 
-    spawn(proxy, loop, [0, List]).
+    register(proxy_server, spawn(proxy, loop, [0, List])).
 
 % People - {Pid, Location}
 loop(Time, People) -> 
