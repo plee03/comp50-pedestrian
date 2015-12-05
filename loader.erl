@@ -1,18 +1,17 @@
 % Loader module
 
 -module(loader).
--export([start/2, create_map/2]).
+-export([start/2, create_map/3]).
 
 start(Schedule, Graph) -> 
     case file:consult(Schedule) of
         {ok, Terms} -> spawn_people(Terms, []);
         {error, Error} -> Error
     end,
-    Map = ugraph:new(),
     case file:consult(Graph) of
         {ok, GraphTerms} ->
             %{_, EdgeCaps} = create_map(GraphTerms, Map, dict:new()),
-            %map:start(Map, EdgeCaps);
+            map:start(GraphTerms);
             %ets:i(edges),
             %ets:give_away(edges, whereis(map_server), none),
             %ets:give_away(vertices, whereis(map_server), none),

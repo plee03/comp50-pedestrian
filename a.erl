@@ -18,7 +18,12 @@ set() ->
 
 ped() ->
     loader:start('', 'graph_test.txt'),
-    map_server ! {next_edge, self(), halligan, braker},
+    map_server ! {next_edge, self(), carmichael, halligan},
+    receive 
+        {NextEdge3, _, _} -> ok
+    end,
+    map_server ! {subscribe, NextEdge3},
+    map_server ! {next_edge, self(), halligan, dewick},
     receive 
         {NextEdge, NextV, Weight} -> ok
     end,
@@ -29,4 +34,18 @@ ped() ->
     map_server ! {subscribe, NextEdge},
     map_server ! {subscribe, NextEdge},
     map_server ! {subscribe, NextEdge},
-    map_server ! {subscribe, NextEdge}.
+    map_server ! {subscribe, NextEdge},
+    map_server ! {subscribe, NextEdge},
+    map_server ! {subscribe, NextEdge},
+    map_server ! {subscribe, NextEdge},
+    map_server ! {next_edge, self(), halligan, dewick},
+    receive 
+        {NextEdge2, _, _} -> ok
+    end,
+    map_server ! {next_edge, self(), carmichael, halligan},
+    receive 
+        {NextEdge4, _, _} -> ok
+    end,
+    map_server ! {subscribe, NextEdge4},
+    map_server ! {subscribe, NextEdge2}.
+
