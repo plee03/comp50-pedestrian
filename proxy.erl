@@ -8,13 +8,18 @@ start(List) ->
     spawn(proxy, loop, [0, List]).
 
 % People - {Pid, Location}
+loop(22, _People) -> ok;
 loop(Time, People) -> 
-    New_People = rpc:pmap({proxy, update_loc}, [Time], People),
-    loop(Time+1, New_People).
+    io:format("Time: ~p\n", [Time]),
+    %New_People = rpc:pmap({proxy, update_loc}, [Time], People),
+    rpc:pmap({proxy, update_loc}, [Time], People),
+    loop(Time+1, People).
 
-update_loc({Pid, _Location}, Time) ->
+update_loc(Pid, Time) ->
     Pid ! {self(), Time},
     receive
-        {Pid, NewLocation} -> {Pid, NewLocation}
+        {Pid, NewLocation, Progress, Distance} -> 
+            %{Pid, NewLocation, Progress, Distance},
+            io:format("Pid: ~p, Loc: ~p, Progress: ~p / ~p\n", [Pid, NewLocation, Progress, Distance]) 
     end.
     
