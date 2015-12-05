@@ -1,4 +1,4 @@
-{"Halligan", 12}.
-{"Braker", 1}.
-{"Pearson", 3}.
+{0, halligan}.
+{1, braker}.
+{9, pearson}.
 
