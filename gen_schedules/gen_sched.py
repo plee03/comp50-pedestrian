@@ -28,7 +28,7 @@ def make_sched(vertices, interval):
     i = 0
     while i < MAXTIME:
         location = pick_random_vertex(vertices)
-        schedule += "{" + str(i) + ", " + location + "}\n"
+        schedule += "{" + str(i) + ", " + location + "}.\n"
         i += interval
     return schedule
 
@@ -42,7 +42,7 @@ def write_sched(directory, sched, sched_num):
     
 def usage():
     sys.stdout.write("Usage: gen_sched.py -g filename -n num_scheds " + 
-                     "-o output_directory -i interval")
+                     "-o output_directory -i interval\n")
 
 def main(args):
     directory = DEFAULT_DIR
@@ -73,7 +73,7 @@ def main(args):
     for i in range(0, num_scheds):
         sched = make_sched(vertices, interval)
         write_sched(directory, sched, i)
-        scheds_list_file.write("sched" + str(i) + ".txt\n")
+        scheds_list_file.write("'" + directory + "/sched" + str(i) + ".txt'.\n")
     scheds_list_file.close()
     return
 
