@@ -1,5 +1,3 @@
-{"Braker", 11}.
-{"Halligan", 1}.
-{"Pearson", 3}.
-{"Lane", 4}.
-{"Dewick", 6}.
+{0, halligan}.
+{4, braker}.
+{13, pearson}.

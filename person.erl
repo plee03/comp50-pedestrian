@@ -1,8 +1,8 @@
 % Person Module
 
 -module(person).
--export([start/2]).
--export([loop/8]).
+-export([start/1]).
+-export([loop/7]).
 -export([start_ex/0]).
 -export([test/0]).
 -export([p_test/0]).
@@ -14,38 +14,38 @@ p_test() ->
     Pid3 = person:start([{0, halligan}, {4, braker}, {13, pearson}], Pid),
     proxy:start([Pid2, Pid3]).
 
-start([{_Start, Start_Loc}|Schedule], Pid) -> 
-   spawn(person, loop, [departing, dict:from_list(Schedule), Start_Loc, [], Start_Loc, 0, 0, Pid]).
+start([{_Start, Start_Loc}|Schedule]) -> 
+   spawn(person, loop, [departing, dict:from_list(Schedule), Start_Loc, [], Start_Loc, 0, 0]).
 
-loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance, Pid) ->
+loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) ->
     %io:format("~p: ~p, ~p, ~p, ~p / ~p\n", [arriving, Current_Loc, Next_Loc, Final_Loc, Progress, Distance]),
-    get_time(Current_Loc, Progress, Distance),
     case  Progress >= Distance of 
         true ->
-            Pid ! {unsubscribe, Current_Loc},
-            loop(departing, Schedule, Next_Loc, Next_Loc, Final_Loc, 0, 0, Pid);
+            map_server ! {unsubscribe, Current_Loc},
+            loop(departing, Schedule, Next_Loc, Next_Loc, Final_Loc, 1, 0);
         false -> 
-        loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress + 1, Distance, Pid)
+            get_time(Current_Loc, Progress, Distance),
+            loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress + 1, Distance)
     end;
 
-loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance, Pid) ->
+loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) ->
     %io:format("~p: ~p, ~p, ~p, ~p / ~p\n", [departing, Current_Loc, Next_Loc, Final_Loc, Progress, Distance]),
     Time = get_time(Current_Loc, Progress, Distance),
     %io:format("Time: ~p\n", [Time]),
     case dict:is_key(Time, Schedule) of 
-        true -> {ok, New_Final_Loc} = dict:find(Time, Schedule);
-        false -> New_Final_Loc = Final_Loc 
+        true when Current_Loc == Final_Loc -> {ok, New_Final_Loc} = dict:find(Time, Schedule);
+        _ -> New_Final_Loc = Final_Loc 
     end,
     case Current_Loc /= New_Final_Loc of
         true -> 
-            Pid ! {shortest_path, self(), Current_Loc, New_Final_Loc},
+            map_server ! {next_edge, self(), Current_Loc, New_Final_Loc},
             receive 
                 {New_Current_Loc, New_Next_Loc, New_Distance} -> {New_Current_Loc, New_Next_Loc, New_Distance}
             end,
-            Pid ! {subscribe, New_Current_Loc},
-            loop(arriving, Schedule, New_Current_Loc, New_Next_Loc, New_Final_Loc, 0, New_Distance, Pid);
+            map_server ! {subscribe, New_Current_Loc},
+            loop(arriving, Schedule, New_Current_Loc, New_Next_Loc, New_Final_Loc, 1, New_Distance);
         false -> 
-            loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, 0, 0, Pid)
+            loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, 1, 0)
     end.
 
 get_time(Location, Progress, Distance) -> 

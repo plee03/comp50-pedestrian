@@ -1,26 +1,32 @@
 % Loader module
 
 -module(loader).
--export([start/2, create_map/3]).
+-export([start/3, create_map/3]).
 
-start(Schedule, Graph) -> 
+start(Schedule, Graph, Output_File) -> 
+    case file:open(Output_File, write) of
+        {ok, Open_File} -> {ok, Open_File};
+        {error, Reason} -> Open_File = "",
+                           exit(Reason)
+    end, 
     case file:consult(Schedule) of
-        {ok, Terms} -> Pids = spawn_people(Terms, []),
-                       proxy:start(Pids);
-        {error, Error} -> Error
+        {ok, Terms} -> Pids = spawn_people(Terms, []);
+        {error, Error} -> Error,
+                          Pids = []
     end,
     case file:consult(Graph) of
         {ok, GraphTerms} ->
             map:start(GraphTerms);
         {error, GraphError} -> GraphError
-    end.
+    end,
+    proxy:start(Pids, Open_File).
 
-spawn_people([], Pids, _) -> Pids;
-spawn_people([F|Files], Pids, Map_Pid) -> 
+spawn_people([], Pids) -> Pids;
+spawn_people([F|Files], Pids) -> 
     case file:consult(F) of 
         {ok, Terms} -> 
-            P = person:start(Terms, Map_Pid),
-            spawn_people(Files, [P | Pids], Map_Pid);
+            P = person:start(Terms),
+            spawn_people(Files, [P | Pids]);
         {error, Error} -> Error
     end.
 
