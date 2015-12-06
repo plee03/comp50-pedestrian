@@ -18,6 +18,7 @@ loop(Map, EdgeCaps) ->
             {E, V1, V2, Weight} = ugraph:edge(Map, Current_Pos),
             %io:fwrite("V1: ~w V2: ~w~n", [V1, V2]),
             EdgeKey = sets:from_list([V1, V2]),
+            %io:format("SEDGEKEY: ~p\n", [EdgeKey]),
             NewEdgeCaps = update_num_people(EdgeKey, EdgeCaps, 1),
             {Base, Cap, NumPeople} = dict:fetch(EdgeKey, EdgeCaps), 
             %io:fwrite('~w people~n', [NumPeople]),
@@ -26,6 +27,7 @@ loop(Map, EdgeCaps) ->
         {unsubscribe, Current_Pos} -> 
             {E, V1, V2, Weight} = ugraph:edge(Map, Current_Pos),
             EdgeKey = sets:from_list([V1, V2]),
+            %io:format("UEDGEKEY: ~p\n", [EdgeKey]),
             NewEdgeCaps = update_num_people(EdgeKey, EdgeCaps, -1),
             {Base, Cap, NumPeople} = dict:fetch(EdgeKey, EdgeCaps), 
             update_weight(Map, E, NumPeople, Cap, Weight, u);
@@ -33,6 +35,7 @@ loop(Map, EdgeCaps) ->
             NewEdgeCaps = EdgeCaps,
             spawn(map, next_edge, [From, Current_Pos, Destination, Map])
     end,
+    io:format("map still alive\n", []),
     loop(Map, NewEdgeCaps).
 
 update_num_people(EdgeKey, EdgeCaps, Num) ->
