@@ -1,0 +1,29 @@
+halligan
+braker
+carmichael
+dewick
+eaton
+french
+granoff
+i_house
+kosher
+lane
+miner
+{halligan, braker, 5}
+{halligan, miner, 4}
+{braker, miner, 1}
+{braker, kosher, 5}
+{braker, eaton, 2}
+{braker, lane, 3}
+{miner, eaton, 3}
+{eaton, dewick, 6}
+{lane, carmichael, 2}
+{lane, kosher, 6}
+{carmichael, kosher, 8}
+{carmichael, i_house, 6}
+{i_house, dewick, 4}
+{i_house, french, 2}
+{french, dewick, 5}
+{dewick, kosher, 1}
+{dewick, eaton, 6}
+
