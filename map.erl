@@ -16,12 +16,12 @@ loop(Map, EdgeCaps) ->
     receive
         {subscribe, Current_Pos} -> 
             {E, V1, V2, Weight} = ugraph:edge(Map, Current_Pos),
-            io:fwrite("V1: ~w V2: ~w~n", [V1, V2]),
+            %io:fwrite("V1: ~w V2: ~w~n", [V1, V2]),
             EdgeKey = sets:from_list([V1, V2]),
             NewEdgeCaps = update_num_people(EdgeKey, EdgeCaps, 1),
             {Base, Cap, NumPeople} = dict:fetch(EdgeKey, EdgeCaps), 
-            io:fwrite('~w people~n', [NumPeople]),
-            io:fwrite("weight: ~w~n", [Weight]),
+            %io:fwrite('~w people~n', [NumPeople]),
+            %io:fwrite("weight: ~w~n", [Weight]),
             update_weight(Map, E, NumPeople, Cap, Weight, s);
         {unsubscribe, Current_Pos} -> 
             {E, V1, V2, Weight} = ugraph:edge(Map, Current_Pos),
