@@ -1,0 +1,15 @@
+{0, lane}.
+{100, miner}.
+{200, halligan}.
+{300, french}.
+{400, lane}.
+{500, lane}.
+{600, lane}.
+{700, miner}.
+{800, kosher}.
+{900, kosher}.
+{1000, ihouse}.
+{1100, kosher}.
+{1200, halligan}.
+{1300, french}.
+{1400, french}.

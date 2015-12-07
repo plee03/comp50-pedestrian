@@ -1,0 +1,15 @@
+{0, lane}.
+{100, carmichael}.
+{200, ihouse}.
+{300, ihouse}.
+{400, halligan}.
+{500, dewick}.
+{600, halligan}.
+{700, ihouse}.
+{800, ihouse}.
+{900, halligan}.
+{1000, eaton}.
+{1100, french}.
+{1200, eaton}.
+{1300, eaton}.
+{1400, kosher}.

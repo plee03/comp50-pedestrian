@@ -1,0 +1,15 @@
+{0, carmichael}.
+{100, french}.
+{200, french}.
+{300, carmichael}.
+{400, kosher}.
+{500, eaton}.
+{600, kosher}.
+{700, halligan}.
+{800, french}.
+{900, halligan}.
+{1000, eaton}.
+{1100, kosher}.
+{1200, eaton}.
+{1300, kosher}.
+{1400, miner}.

@@ -1,0 +1,15 @@
+{0, dewick}.
+{100, french}.
+{200, miner}.
+{300, french}.
+{400, ihouse}.
+{500, carmichael}.
+{600, dewick}.
+{700, dewick}.
+{800, halligan}.
+{900, halligan}.
+{1000, lane}.
+{1100, braker}.
+{1200, carmichael}.
+{1300, eaton}.
+{1400, dewick}.

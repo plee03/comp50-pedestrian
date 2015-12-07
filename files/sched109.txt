@@ -1,0 +1,15 @@
+{0, french}.
+{100, halligan}.
+{200, dewick}.
+{300, ihouse}.
+{400, miner}.
+{500, kosher}.
+{600, french}.
+{700, halligan}.
+{800, lane}.
+{900, carmichael}.
+{1000, carmichael}.
+{1100, french}.
+{1200, halligan}.
+{1300, lane}.
+{1400, miner}.

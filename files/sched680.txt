@@ -1,0 +1,15 @@
+{0, halligan}.
+{100, miner}.
+{200, eaton}.
+{300, halligan}.
+{400, french}.
+{500, miner}.
+{600, carmichael}.
+{700, carmichael}.
+{800, miner}.
+{900, eaton}.
+{1000, eaton}.
+{1100, eaton}.
+{1200, miner}.
+{1300, braker}.
+{1400, ihouse}.

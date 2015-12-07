@@ -21,9 +21,13 @@ add_edge(G, V1, V2, Label) ->
     digraph:add_edge(G, V1, V2, Label).
 
 update_edge(G, E, V1, V2, Label) ->
+    io:fwrite("ADDING EDGE 1"),
     digraph:add_edge(G, E, V1, V2, Label),
+    io:fwrite("ADDING EDGE 2"),
     InEdges = digraph:in_edges(G, V1),
+    io:fwrite("ADDING EDGE 3"),
     E2 = find_edge(G, V2, V1, InEdges),
+    io:fwrite("ADDING EDGE 4"),
     digraph:add_edge(G, E2, V2, V1, Label).
 
 % Given a graph and vertices (V1, V2), and a list of edges, finds an edge going
@@ -38,6 +42,7 @@ find_edge(G, V1, V2, [E | Edges]) ->
 edge(G, E) -> digraph:edge(G, E).
 
 shortest_path(G, V1, V2) -> 
+    io:fwrite("Searching shortest path from ~w to ~w~n", [V1, V2]),
     Unvisited = digraph:vertices(G),
     % Making a dictionary of (vertex, (prev, tentative-distance)) pairs
     % where prev is the previous vertex, initialized to start for V1, and none for 
@@ -96,9 +101,9 @@ shortest_path(G, CurrentV, DesV, Unvisited, Distances) ->
                                end, Distances, UnvisitedOutEdges),
 
     {NextV, _} = lists:foldl(fun (V2, {NextV, NextVDist}) ->
-                            io:fwrite("nextV: ~w, nextdist: ~w~n", [NextV, NextVDist]),
-                            io:fwrite("V: ~w, dist: ~w~n", [V2, dict:fetch(V2,
-                            NewDistances)]),
+                            %io:fwrite("nextV: ~w, nextdist: ~w~n", [NextV, NextVDist]),
+                            %io:fwrite("V: ~w, dist: ~w~n", [V2, dict:fetch(V2,
+                            %NewDistances)]),
                             case dict:fetch(V2, NewDistances) of
                                 {_, D} when NextVDist == -1 -> {V2, D};
                                 {_, D} when D == -1 -> {NextV, NextVDist};

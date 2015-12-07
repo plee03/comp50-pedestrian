@@ -1,0 +1,15 @@
+{0, lane}.
+{100, miner}.
+{200, french}.
+{300, braker}.
+{400, kosher}.
+{500, halligan}.
+{600, eaton}.
+{700, kosher}.
+{800, lane}.
+{900, halligan}.
+{1000, french}.
+{1100, halligan}.
+{1200, braker}.
+{1300, lane}.
+{1400, kosher}.

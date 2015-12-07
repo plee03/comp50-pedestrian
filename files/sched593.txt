@@ -1,0 +1,15 @@
+{0, french}.
+{100, french}.
+{200, braker}.
+{300, carmichael}.
+{400, braker}.
+{500, braker}.
+{600, french}.
+{700, lane}.
+{800, eaton}.
+{900, braker}.
+{1000, french}.
+{1100, miner}.
+{1200, carmichael}.
+{1300, kosher}.
+{1400, braker}.

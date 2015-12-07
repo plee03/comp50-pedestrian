@@ -1,0 +1,15 @@
+{0, eaton}.
+{100, french}.
+{200, french}.
+{300, kosher}.
+{400, dewick}.
+{500, dewick}.
+{600, miner}.
+{700, kosher}.
+{800, ihouse}.
+{900, ihouse}.
+{1000, miner}.
+{1100, lane}.
+{1200, kosher}.
+{1300, lane}.
+{1400, miner}.

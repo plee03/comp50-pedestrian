@@ -1,0 +1,15 @@
+{0, carmichael}.
+{100, eaton}.
+{200, ihouse}.
+{300, carmichael}.
+{400, lane}.
+{500, lane}.
+{600, carmichael}.
+{700, carmichael}.
+{800, braker}.
+{900, lane}.
+{1000, kosher}.
+{1100, miner}.
+{1200, eaton}.
+{1300, kosher}.
+{1400, carmichael}.

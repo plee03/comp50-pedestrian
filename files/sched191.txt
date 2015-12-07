@@ -1,0 +1,15 @@
+{0, lane}.
+{100, eaton}.
+{200, french}.
+{300, lane}.
+{400, miner}.
+{500, braker}.
+{600, eaton}.
+{700, french}.
+{800, eaton}.
+{900, miner}.
+{1000, dewick}.
+{1100, lane}.
+{1200, eaton}.
+{1300, lane}.
+{1400, french}.

@@ -1,0 +1,15 @@
+{0, french}.
+{100, braker}.
+{200, carmichael}.
+{300, ihouse}.
+{400, dewick}.
+{500, carmichael}.
+{600, miner}.
+{700, kosher}.
+{800, miner}.
+{900, miner}.
+{1000, carmichael}.
+{1100, kosher}.
+{1200, kosher}.
+{1300, miner}.
+{1400, eaton}.

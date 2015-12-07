@@ -1,0 +1,15 @@
+{0, lane}.
+{100, braker}.
+{200, braker}.
+{300, kosher}.
+{400, lane}.
+{500, dewick}.
+{600, ihouse}.
+{700, french}.
+{800, carmichael}.
+{900, kosher}.
+{1000, ihouse}.
+{1100, ihouse}.
+{1200, eaton}.
+{1300, french}.
+{1400, lane}.

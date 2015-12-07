@@ -1,0 +1,15 @@
+{0, eaton}.
+{100, braker}.
+{200, lane}.
+{300, dewick}.
+{400, french}.
+{500, kosher}.
+{600, halligan}.
+{700, eaton}.
+{800, dewick}.
+{900, dewick}.
+{1000, miner}.
+{1100, dewick}.
+{1200, eaton}.
+{1300, halligan}.
+{1400, braker}.

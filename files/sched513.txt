@@ -1,0 +1,15 @@
+{0, braker}.
+{100, french}.
+{200, miner}.
+{300, carmichael}.
+{400, carmichael}.
+{500, braker}.
+{600, french}.
+{700, carmichael}.
+{800, miner}.
+{900, braker}.
+{1000, carmichael}.
+{1100, miner}.
+{1200, carmichael}.
+{1300, ihouse}.
+{1400, french}.

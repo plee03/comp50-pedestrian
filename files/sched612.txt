@@ -1,0 +1,15 @@
+{0, carmichael}.
+{100, braker}.
+{200, miner}.
+{300, eaton}.
+{400, halligan}.
+{500, braker}.
+{600, braker}.
+{700, halligan}.
+{800, dewick}.
+{900, braker}.
+{1000, ihouse}.
+{1100, dewick}.
+{1200, halligan}.
+{1300, miner}.
+{1400, carmichael}.
