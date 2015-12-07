@@ -96,9 +96,9 @@ shortest_path(G, CurrentV, DesV, Unvisited, Distances) ->
                                end, Distances, UnvisitedOutEdges),
 
     {NextV, _} = lists:foldl(fun (V2, {NextV, NextVDist}) ->
-                            %io:fwrite("nextV: ~w, nextdist: ~w~n", [NextV, NextVDist]),
-                            %io:fwrite("V: ~w, dist: ~w~n", [V2, dict:fetch(V2,
-                            %NewDistances)]),
+                            io:fwrite("nextV: ~w, nextdist: ~w~n", [NextV, NextVDist]),
+                            io:fwrite("V: ~w, dist: ~w~n", [V2, dict:fetch(V2,
+                            NewDistances)]),
                             case dict:fetch(V2, NewDistances) of
                                 {_, D} when NextVDist == -1 -> {V2, D};
                                 {_, D} when D == -1 -> {NextV, NextVDist};

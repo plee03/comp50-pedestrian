@@ -4,7 +4,7 @@
 -export([start/2]).
 -export([loop/3, update_loc/2]).
 
--define(STOP_TIME, 30).
+-define(STOP_TIME, 1440).
 
 start(List, Output_File) -> 
     io:format(Output_File, "[", []),
