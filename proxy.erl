@@ -35,13 +35,13 @@ update_loc(Pid, Time) ->
 print_step([], Output_File) -> 
     io:format(Output_File, "]}", []); 
 print_step([ Person | []], Output_File) -> 
-    io:format(Output_File, "{Pid: ~w, Location:~w, Progress: ~w}", Person),
+    io:format(Output_File, '{"Pid": "~w", "Location":"~s", "Progress":~w}', Person),
     print_step([], Output_File);
 print_step([ Person | People_Data], Output_File) -> 
-    io:format(Output_File, "{Pid: ~w, Location:~w, Progress: ~w},", Person),
+    io:format(Output_File, '{"Pid": "~w", "Location":"~s", "Progress":~w},', Person),
     print_step(People_Data, Output_File).
 
 print_step(Time, People_Data, Output_File) -> 
-    io:format(Output_File, "{Time: ~w, People: [", [Time]),
+    io:format(Output_File, '{"Time": "~w", "People": [', [Time]),
     io:format("TIME: ~p\nPEOPLE: ~p\n", [Time, People_Data]),
     print_step(People_Data, Output_File).

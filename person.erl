@@ -6,6 +6,7 @@
 -export([start_ex/0]).
 -export([test/0]).
 -export([p_test/0]).
+-export([new_progress/3]).
 
 p_test() ->
     Pid = person:start_ex(),
@@ -25,7 +26,10 @@ loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) -
             loop(departing, Schedule, Next_Loc, Next_Loc, Final_Loc, 1, 0);
         false -> 
             get_time(Current_Loc, Progress, Distance),
-            loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress + 1, Distance)
+            Weight = get_weight(Current_Loc),
+            NewDistance = min(Weight, Distance),
+            
+            loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress + 1, NewDistance)
     end;
 
 loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) ->
@@ -46,6 +50,17 @@ loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) 
             loop(arriving, Schedule, New_Current_Loc, New_Next_Loc, New_Final_Loc, 1, New_Distance);
         false -> 
             loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, 1, 0)
+    end.
+
+new_progress(Progress, Distance, NewDistance) ->
+    round(Progress / (float(Distance) / float(NewDistance))).
+
+
+
+get_weight(Location) -> 
+    map_server ! {path_weight, self(), Location},
+    receive 
+        {weight, Weight}-> Weight
     end.
 
 get_time(Location, Progress, Distance) -> 

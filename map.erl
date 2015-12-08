@@ -2,7 +2,7 @@
 
 -module(map).
 -export([start/1]).
--export([loop/2, next_edge/4, init/1]).
+-export([loop/2, next_edge/5, init/1]).
 
 start(GraphTerms) ->
     register(map_server, spawn(map, init, [GraphTerms])).
@@ -22,20 +22,24 @@ loop(Map, EdgeCaps) ->
             NewEdgeCaps = update_num_people(EdgeKey, EdgeCaps, 1),
             {Base, Cap, NumPeople} = dict:fetch(EdgeKey, EdgeCaps), 
             %io:fwrite('~w people~n', [NumPeople]),
-            io:fwrite("weight: ~w~n", [Weight]),
+            %io:fwrite("weight: ~w~n", [Weight]),
             update_weight(Map, E, NumPeople, Cap, Weight, s);
+        {path_weight, From, Edge} ->
+            NewEdgeCaps = EdgeCaps,
+            {_, _, _, Weight} = ugraph:edge(Map, Edge),
+            From ! {weight, Weight};
         {unsubscribe, Current_Pos} -> 
             {E, V1, V2, Weight} = ugraph:edge(Map, Current_Pos),
             EdgeKey = make_edge_key(V1, V2),
             %io:format("UEDGEKEY: ~p\n", [EdgeKey]),
-            io:fwrite("weight: ~w~n", [Weight]),
+            %io:fwrite("weight: ~w~n", [Weight]),
             NewEdgeCaps = update_num_people(EdgeKey, EdgeCaps, -1),
             {Base, Cap, NumPeople} = dict:fetch(EdgeKey, EdgeCaps), 
             update_weight(Map, E, NumPeople, Cap, Weight, u);
         {next_edge, From, Current_Pos, Destination} -> 
             %io:fwrite("~w Going from ~w to ~w~n", [From, Current_Pos, Destination]),
             NewEdgeCaps = EdgeCaps,
-            spawn(map, next_edge, [From, Current_Pos, Destination, Map])
+            spawn(map, next_edge, [From, Current_Pos, Destination, Map, EdgeCaps])
     end,
     loop(Map, NewEdgeCaps).
 
@@ -45,20 +49,19 @@ update_num_people(EdgeKey, EdgeCaps, Num) ->
 
 update_weight(G, E, NumPeople, Cap, Weight, s) when NumPeople >= Cap ->
     {_, V1, V2, _} = ugraph:edge(G, E),
-    io:fwrite("WEIGHT + 3~n"),
     ugraph:update_edge(G, E, V1, V2, Weight + 3);
 update_weight(G, E, NumPeople, Cap, Weight, u) when NumPeople > Cap ->
     {_, V1, V2, _} = ugraph:edge(G, E),
-    io:fwrite("WEIGHT - 3~n"),
     ugraph:update_edge(G, E, V1, V2, Weight - 3);
 update_weight(_, _, NumPeople, Cap, _, _) when NumPeople =< Cap ->
     ok.
 
 
-next_edge(From, Current_Pos, Destination, Map) ->
+next_edge(From, Current_Pos, Destination, Map, EdgeCaps) ->
     case ugraph:shortest_path(Map, Current_Pos, Destination) of
         [NextEdge | _Path] ->
-            {_, _, V2, Weight} = ugraph:edge(Map, NextEdge),
+            {_, V1, V2, Weight} = ugraph:edge(Map, NextEdge),
+            {Base, _, _} = dict:fetch(make_edge_key(V1, V2), EdgeCaps),
             From ! {NextEdge, V2, Weight};
         [] -> 
             erlang:error(current_dest_same) 

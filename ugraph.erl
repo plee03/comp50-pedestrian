@@ -17,17 +17,15 @@ vertices(G) -> digraph:vertices(G).
 vertex(G, V) -> digraph:vertex(G, V).
 
 add_edge(G, V1, V2, Label) ->
-    digraph:add_edge(G, V2, V1, Label),
-    digraph:add_edge(G, V1, V2, Label).
+    StrV1V2 = lists:flatten(io_lib:format("~w#~w", [V1, V2])),
+    StrV2V1 = lists:flatten(io_lib:format("~w#~w", [V2, V1])),
+    digraph:add_edge(G, StrV2V1, V2, V1, Label),
+    digraph:add_edge(G, StrV1V2, V1, V2, Label).
 
 update_edge(G, E, V1, V2, Label) ->
-    io:fwrite("ADDING EDGE 1"),
     digraph:add_edge(G, E, V1, V2, Label),
-    io:fwrite("ADDING EDGE 2"),
     InEdges = digraph:in_edges(G, V1),
-    io:fwrite("ADDING EDGE 3"),
     E2 = find_edge(G, V2, V1, InEdges),
-    io:fwrite("ADDING EDGE 4"),
     digraph:add_edge(G, E2, V2, V1, Label).
 
 % Given a graph and vertices (V1, V2), and a list of edges, finds an edge going
