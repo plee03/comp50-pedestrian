@@ -2,7 +2,7 @@
 -export([start/0, test/0, set/0, ped/0]).
 -export([l/0]).
 
-l() -> loader:start("files/schedules.txt", "gen_schedules/graph.txt", "output.txt").
+l() -> loader:start("files/schedules.txt", "graph2.txt", "output.txt").
 start() ->
     spawn(a, test, []).
 

@@ -20,6 +20,8 @@ start(List, Output_File) ->
 % makes function calls to receive updated locations and print those to a file
 % in JSON format and increases the time
 loop(Time, _People, Output_File) when Time == ?STOP_TIME -> 
+loop(Time, _People, Output_File) when Time == ?STOP_TIME -> 
+    io:format("Done~n"),
     io:format(Output_File, "]\n", []);
 loop(Time, People, Output_File)  when Time == ?STOP_TIME - 1 -> 
     People_Data = rpc:pmap({proxy, update_loc}, [Time], People),
@@ -43,12 +45,12 @@ update_loc(Pid, Time) ->
 print_step([], Output_File) -> 
     io:format(Output_File, "]}", []); 
 print_step([ Person | []], Output_File) -> 
-    io:format(Output_File, "{Pid: ~w, Location:~w, Progress: ~w}", Person),
+    io:format(Output_File, '{"Pid": "~w", "Location":"~s", "Progress":~w}', Person),
     print_step([], Output_File);
 print_step([ Person | People_Data], Output_File) -> 
-    io:format(Output_File, "{Pid: ~w, Location:~w, Progress: ~w},", Person),
+    io:format(Output_File, '{"Pid": "~w", "Location":"~s", "Progress":~w},', Person),
     print_step(People_Data, Output_File).
 print_step(Time, People_Data, Output_File) -> 
-    io:format(Output_File, "{Time: ~w, People: [", [Time]),
+    io:format(Output_File, '{"Time": "~w", "People": [', [Time]),
     print_step(People_Data, Output_File).
 

@@ -1,10 +1,12 @@
 % Person Module
 % by: Peter Lee and Caitlin Klein
 % date: December 10, 2015
-% description: 
+% description: models a person, each person has a schedule and if they have
+%              to go somewhere at the specified time they ask a map server
+%              what their next location is 
 
 -module(person).
--export([start/1, loop/7]).
+-export([start/1, loop/7, new_progress/3]).
 
 % spawns a person with a dictionary containing their schedule
 start([{_Start, Start_Loc}|Schedule]) -> 
@@ -19,8 +21,11 @@ loop(arriving, Schedule, Curr_Loc, Next_Loc, Final_Loc, Progress, Distance) ->
             loop(departing, Schedule, Next_Loc, Next_Loc, Final_Loc, 1, 0);
         false -> 
             get_time(Curr_Loc, Progress, Distance),
+            Weight = get_weight(Curr_Loc),
+            NewDistance = min(Weight, Distance),
+            NewProgress = new_progress(Progress, Distance, NewDistance),
             loop(arriving, Schedule, Curr_Loc, Next_Loc, Final_Loc, 
-                 Progress + 1, Distance)
+                 NewProgress + 1, NewDistance)
     end;
 loop(departing, Schedule, Curr_Loc, Next_Loc, Final_Loc, Progress, Distance) ->
     Time = get_time(Curr_Loc, Progress, Distance),
@@ -49,4 +54,16 @@ get_time(Location, Progress, Distance) ->
         {From, Time} -> From ! {self(), Location, Progress, Distance}
     end,
     Time.
+
+% scales progress according to the new distance
+% used when the weight / distance of a path has changed
+new_progress(Progress, Distance, NewDistance) ->
+    round(Progress / (float(Distance) / float(NewDistance))).
+
+% receives the current weight of the path a person is on
+get_weight(Location) -> 
+    map_server ! {path_weight, self(), Location},
+    receive 
+        {weight, Weight}-> Weight
+    end.
 
