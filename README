@@ -77,3 +77,14 @@ Format of Files
     addition because the person uses a dictionary the times do not need to be
     in increasing order. 
 
+To use the provided visualization file viz.html:
+    Have a correctly formatted graph file titled “graph.txt” in the same 
+    directory as viz.html. Have an output file from the Pedestrian Modeling 
+    simulation named “output.txt".Start a web server that hosts “viz.html”
+    and view the file in a web browser.
+
+    EX: 
+    >python -m SimpleHTTPServer
+    In the directory containing viz.html and opening localhost:8000/viz.html
+    in a web browser.
+
