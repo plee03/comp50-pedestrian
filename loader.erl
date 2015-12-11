@@ -1,9 +1,9 @@
 % Loader module
 % by: Peter Lee and Caitlin Klein
 % date: December 10, 2015
-% description: used to load all of the information necessary for the 
-%              pedestrian model spawns the map, proxy, and persons with 
-%              the given information
+% description: Used to load all of the information necessary for the 
+%              pedestrian model. Spawns the map, proxy, and persons with 
+%              the given information.
 
 -module(loader).
 -export([start/3]).
