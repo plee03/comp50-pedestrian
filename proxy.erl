@@ -20,7 +20,6 @@ start(List, Output_File) ->
 % makes function calls to receive updated locations and print those to a file
 % in JSON format and increases the time
 loop(Time, _People, Output_File) when Time == ?STOP_TIME -> 
-loop(Time, _People, Output_File) when Time == ?STOP_TIME -> 
     io:format("Done~n"),
     io:format(Output_File, "]\n", []);
 loop(Time, People, Output_File)  when Time == ?STOP_TIME - 1 -> 

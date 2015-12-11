@@ -1,8 +1,9 @@
-% graph.erl
+% ugraph.erl
 % By Peter Lee, Caitlin Klein
 % December 10, 2015
 %
-% This module provides a simple interface for creating an undirected graph.
+% This ugraph module provides a simple interface for creating an undirected 
+% graph.
 
 -module(ugraph).
 -export([new/0, add_edge/4, add_vertex/2, add_vertex/3, edge/2,
@@ -46,16 +47,14 @@ update_edge(G, E, V1, V2, Label) ->
 
 %% Given a graph and two vertices, returns a list of the edges representing
 %% the shortest path from V1 to V2.
-%% If V2 is unreachable, behavior is undefined.
-%%
+%% Returns false if V2 cannot be reached from V1. 
 shortest_path(G, V1, V2) -> 
     Unvisited = digraph:vertices(G),
-    % Making a dictionary of (vertex, (prev, tentative-distance)) pairs
-    % where prev is the previous vertex, initialized to start for V1, and none for 
-    % every other vertex.
-    Distances = lists:foldl(fun(V, D) when V1 == V -> dict:store(V1, {start, 0}, D);
-                               (V, D)  -> dict:store(V, {none, -1}, D) end, dict:new(), 
-                                                                    Unvisited),
+    Distances = lists:foldl(fun(V, D) when V1 == V -> 
+                                dict:store(V1, {start, 0}, D);
+                               (V, D)  -> 
+                                dict:store(V, {none, -1}, D) 
+                            end, dict:new(), Unvisited),
     shortest_path(G, V1, V2, Unvisited, Distances).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,6 +77,7 @@ find_edge(G, V1, V2, [E | Edges]) ->
 get_path(V, Distances, Path) ->
     case dict:fetch(V, Distances) of
         {start, _} -> Path;
+        {none, _} -> false;
         {{E, V1}, _} -> get_path(V1, Distances, [E | Path])
     end.
     
@@ -90,35 +90,39 @@ shortest_path(G, CurrentV, DesV, Unvisited, Distances) ->
     NewUnvisited = lists:delete(CurrentV, Unvisited), 
     % For our current edge, get a list of all its edges leading to unvisited
     % vertices
-    Out_edges = [edge(G, Edge) || Edge <- digraph:out_edges(G, CurrentV)],
+    OutEdges = [edge(G, Edge) || Edge <- digraph:out_edges(G, CurrentV)],
     UnvisitedOutEdges = lists:filter(fun ({_E, _V1, V2, _Weight}) ->
                                           lists:member(V2, Unvisited)
-                                     end, Out_edges),
+                                     end, OutEdges),
     {_, CurrentVDistance} = dict:fetch(CurrentV, Distances),
 
     % Calculate new tentative distance for each neighboring edge, and replace
     % in distance dictionary if the distance is better
     NewDistances = lists:foldl(fun ({E, V1, V2, Weight}, DistDict) ->
-                                        NewDistance = CurrentVDistance + Weight,
-                                        case dict:fetch(V2, DistDict) of
-                                            {_, -1} -> 
-                                                dict:store(V2, {{E, V1}, NewDistance}, DistDict);
-                                            {_, D} when D > NewDistance -> 
-                                                dict:store(V2, {{E, V1}, NewDistance}, DistDict);
-                                            {_, D} when D =< NewDistance -> 
-                                                DistDict
-                                        end
+                                    NewDistance = CurrentVDistance + Weight,
+                                    case dict:fetch(V2, DistDict) of
+                                        {_, -1} -> 
+                                            dict:store(V2, 
+                                                       {{E, V1}, NewDistance},
+                                                       DistDict);
+                                        {_, D} when D > NewDistance -> 
+                                            dict:store(V2, 
+                                                       {{E, V1}, NewDistance},
+                                                       DistDict);
+                                        {_, D} when D =< NewDistance -> 
+                                            DistDict
+                                    end
                                end, Distances, UnvisitedOutEdges),
 
+    %% Choosing unvisited vertex with shortest tentative distance to traverse
+    %% next.
     {NextV, _} = lists:foldl(fun (V2, {NextV, NextVDist}) ->
-                            %io:fwrite("nextV: ~w, nextdist: ~w~n", [NextV, NextVDist]),
-                            %io:fwrite("V: ~w, dist: ~w~n", [V2, dict:fetch(V2,
-                            %NewDistances)]),
                             case dict:fetch(V2, NewDistances) of
                                 {_, D} when NextVDist == -1 -> {V2, D};
                                 {_, D} when D == -1 -> {NextV, NextVDist};
                                 {_, D} when D < NextVDist -> {V2, D};
-                                {_, D} when D >= NextVDist -> {NextV, NextVDist}
+                                {_, D} when D >= NextVDist -> 
+                                    {NextV, NextVDist}
                             end
                        end, {none, -1}, NewUnvisited),
     shortest_path(G, NextV, DesV, NewUnvisited, NewDistances).

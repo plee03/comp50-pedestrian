@@ -1,0 +1,180 @@
+/* viz.html
+ * By Peter Lee, Caitlin Klein
+ * December 10, 2015
+ * 
+ * Visualizes output JSON data from Pedestrial Modeling Program as a graph*/
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.10.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.10.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        html, body {
+            font: 10pt arial;
+        }
+        #mynetwork {
+            width: 100%;
+            height: 100%;
+            border: 1px solid lightgray;
+        }
+    <meta charset="utf-8" />
+    </style>
+</head>
+<body>
+<div id="mynetwork"></div>
+<script type="text/javascript">
+    // Parses graph given a graph, and updates the lists vertices and edges
+    // with appropriate information.
+    function parse_graph (graphdata, vertices, edges) {
+        lines = graphdata.split(".\n")
+        for (i = 0; i < lines.length; i++) {
+            if (lines[i][0] == "{") {
+                line = lines[i].substring(1, lines[i].length - 1);
+                // [halligan, braker, Weight, Capacity]
+                terms = line.split(", ");
+                edges.push(terms);
+
+            } else if (lines[i] == "") {
+                continue;
+            } else {
+                vertices.push(lines[i]);
+
+            }
+        }
+
+    }
+    $(document).ready(function() {
+    $.get("output.txt", function (data) {
+        var jsondata = JSON.parse(data);
+        $.get("graph.txt", function (data) {
+            vertices = [];
+            edges = [];
+            var graphdata = parse_graph(data, vertices, edges);
+            
+            for (i = 0; i < vertices.length; i++) {
+                vertices[i] = {id: vertices[i], label: vertices[i], fixed: true, title: 0};
+            }
+            vertices[0]["title"] += 1;
+            var nodes = new vis.DataSet(vertices);
+            
+            var vizEdges = [];
+            for (i = 0; i < edges.length; i++) {
+                vizEdges.push({from: edges[i][0], to: edges[i][1], value: 0, title: 0, capacity : parseInt(edges[i][3])});
+            }
+            // create a network
+            var container = document.getElementById('mynetwork');
+
+            // provide the data in the vis format
+            var data = {
+                nodes: nodes,
+                edges: vizEdges
+            };
+            var options = {
+                nodes: {
+                    shape: 'dot',
+                    scaling: {
+                        customScalingFunction: function (min, max, total, value) {
+                            return value/total;
+                        },
+                        min: 5,
+                        max: 500
+                    }
+                },
+                edges: {
+                    scaling: {
+                        customScalingFunction: function (min, max, total, value) {
+                            return value/total;
+                        },
+                        min: 1,
+                        max: 50
+                    }
+                },
+                width: '100%',
+                height: '100%'
+            };
+            // initialize your network!
+            var network = new vis.Network(container, data, options);
+            var time = 0;
+            function update_node(vertex, vertices) {
+                for (var j = 0; j < vertices.length; j++) {
+                    if (vertices[j]["id"] == vertex) {
+                        vertices[j]["title"] += 1;
+                    }
+                }
+                
+            }
+
+            // Finds and increments the number of people on an edge
+            function update_edge(v1, v2, vizEdges) {
+                for (var i = 0; i < vizEdges.length; i++) {
+                    if ((vizEdges[i]["from"] == v1 && vizEdges[i]["to"] == v2) || 
+                        (vizEdges[i]["from"] == v2 && vizEdges[i]["to"] == v1)) {
+                        vizEdges[i]["title"] += 1;
+                        vizEdges[i]["value"] += 1;
+                    }
+                }
+            }
+
+            // Colors each edge according to the number of people and capacity.
+            function color_capacity(vizEdges) {
+                for (var i = 0; i < vizEdges.length; i++) {
+                    var numPeople = vizEdges[i]["value"];
+                    var capacity = vizEdges[i]["capacity"]; 
+                    if (numPeople > capacity * 1.5) {
+                        vizEdges[i]["color"] = "#ff3300"; // red
+                    } else if (numPeople > capacity) {
+                        vizEdges[i]["color"] = "#ffcc00"; // orange
+                    } else if (numPeople > capacity / 2){
+                        vizEdges[i]["color"] = "#33cc33"; // green
+                    } else {
+                        vizEdges[i]["color"] = "#848484"; // grey
+                    }
+                }
+            }
+
+            // Resets number of people on each edge and vertex to 0
+            function reset(vertices, vizEdges) {
+                for (var i = 0; i < vertices.length; i++) {
+                    vertices[i]["title"] = 0;
+                }
+                for (var i = 0; i < vizEdges.length; i++) {
+                    vizEdges[i]["title"] = 0;
+                    vizEdges[i]["value"] = 0;
+                }
+            }
+
+            // Updates the number of people on each edge and vertex for a 
+            // time step.
+            function updateStep () {
+                reset(vertices, vizEdges);  
+                var currentStepData = jsondata[time];
+                var currentPeople = currentStepData["People"];
+                time++;
+                for (var i = 0; i < currentPeople.length; i++) {
+                    var currentPerson = currentPeople[i];
+                    var loc = currentPerson["Location"];
+                    if (loc.indexOf("#") == -1) {
+                        update_node(loc, vertices);
+                    } else {
+                        var edge = loc.split("#");
+                        update_edge(edge[0], edge[1], vizEdges);    
+                    }
+                    color_capacity(vizEdges);
+                }
+
+                if (time < 1440) {
+                    setTimeout(updateStep, 500);
+                    network.setData({nodes : vertices, edges : vizEdges});
+                    network.redraw();
+                }
+            }
+            setTimeout(updateStep, 500);
+
+        });
+
+    });
+});
+</script>
+</body>
+</html>

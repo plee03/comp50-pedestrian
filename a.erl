@@ -27,7 +27,7 @@ ped() ->
     map_server ! {subscribe, NextEdge3},
     map_server ! {next_edge, self(), halligan, dewick},
     receive 
-        {NextEdge, NextV, Weight} -> ok
+        {NextEdge, _, _} -> ok
     end,
     map_server ! {subscribe, NextEdge},
     map_server ! {subscribe, NextEdge},
