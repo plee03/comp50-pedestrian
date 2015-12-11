@@ -49,10 +49,10 @@ update_num_people(EdgeKey, EdgeCaps, Num) ->
 
 update_weight(G, E, NumPeople, Cap, Weight, s) when NumPeople >= Cap ->
     {_, V1, V2, _} = ugraph:edge(G, E),
-    ugraph:update_edge(G, E, V1, V2, Weight + 3);
+    ugraph:update_edge(G, E, V1, V2, Weight + 2);
 update_weight(G, E, NumPeople, Cap, Weight, u) when NumPeople > Cap ->
     {_, V1, V2, _} = ugraph:edge(G, E),
-    ugraph:update_edge(G, E, V1, V2, Weight - 3);
+    ugraph:update_edge(G, E, V1, V2, Weight - 2);
 update_weight(_, _, NumPeople, Cap, _, _) when NumPeople =< Cap ->
     ok.
 

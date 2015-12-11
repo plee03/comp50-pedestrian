@@ -28,8 +28,8 @@ loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) -
             get_time(Current_Loc, Progress, Distance),
             Weight = get_weight(Current_Loc),
             NewDistance = min(Weight, Distance),
-            
-            loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress + 1, NewDistance)
+            NewProgress = new_progress(Progress, Distance, NewDistance),
+            loop(arriving, Schedule, Current_Loc, Next_Loc, Final_Loc, NewProgress + 1, NewDistance)
     end;
 
 loop(departing, Schedule, Current_Loc, Next_Loc, Final_Loc, Progress, Distance) ->

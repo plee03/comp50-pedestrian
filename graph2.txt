@@ -9,17 +9,17 @@ kosher.
 lane.
 miner.
 {halligan, braker, 5, 5}.
-{halligan, miner, 4, 5}.
-{braker, miner, 3, 4}.
-{braker, kosher, 5, 3}.
-{braker, eaton, 4, 2}.
-{miner, eaton, 3, 3}.
+{halligan, miner, 2, 5}.
+{braker, miner, 1, 4}.
+{braker, kosher, 5, 10}.
+{braker, eaton, 4, 4}.
+{miner, eaton, 3, 4}.
 {lane, carmichael, 2, 4}.
 {lane, kosher, 6, 4}.
-{carmichael, kosher, 8, 1}.
+{carmichael, kosher, 8, 4}.
 {carmichael, ihouse, 6, 3}.
 {ihouse, dewick, 4, 4}.
 {ihouse, french, 2, 4}.
 {french, dewick, 5, 4}.
-{french, miner, 25, 100}.
+{french, miner, 20, 30}.
 {dewick, kosher, 5, 5}.
