@@ -1,0 +1,26 @@
+halligan.
+braker.
+carmichael.
+dewick.
+eaton.
+french.
+ihouse.
+kosher.
+lane.
+miner.
+{halligan, braker, 5, 1}.
+{halligan, miner, 4, 1}.
+{braker, miner, 3, 1}.
+{braker, kosher, 5, 1}.
+{braker, eaton, 2, 1}.
+{braker, lane, 3, 1}.
+{miner, eaton, 3, 1}.
+{lane, carmichael, 2, 1}.
+{lane, kosher, 6, 1}.
+{carmichael, kosher, 8, 1}.
+{carmichael, ihouse, 6, 1}.
+{ihouse, dewick, 4, 1}.
+{ihouse, french, 2, 1}.
+{french, dewick, 5, 1}.
+{dewick, kosher, 5, 1}.
+{dewick, eaton, 6, 1}.

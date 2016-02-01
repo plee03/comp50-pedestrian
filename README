@@ -1,0 +1,90 @@
+Pedestrian Model
+by: Caitlin Klein and Peter Lee
+
+Files
+- proxy.erl: The server that synchronizes and sends the time to person processes 
+             and outputs time and location information to a file.
+- loader.erl: The loader module for the program. Reads in file input and spawns
+              the map server, proxy, and all of the person processes according 
+              to the data. 
+- map.erl: The module for the map server.
+- ugraph.erl: The module representing undirected graphs.
+- person.erl: The module representing a person as a process.
+- gen_sched.py: Generates random schedule given a graph for use with the program
+                above. See below for usage.
+- viz.html: Implements a visualization of the output of the pedestrian traffic
+            simulation.
+- compile: compiles the erl modules
+
+
+How to Run
+    The program can be run by opening up the erlang intepreter and calling 
+    loader:start with 3 arguments in this order: a file containing a list of 
+    all the file names that are schedules for the persons, a file containing
+    the layout of the graph, and a file to the output to.
+
+    For easy generation of files we have written a python script (gen_sched.py)
+    to pseudo randomly generate schedules. The filename is the file containing
+    the graph information and the interval is how often people move. So if the 
+    interval is set to 10, people move every 10 ticks. The people are relentless
+    in travelling to a location so if they don't have enough time to get somewhere
+    they will skip the next location and continue.
+    Usage: gen_sched.py -g filename -n num_scheds -o output_directory -i interval
+    
+    We have provided graph.txt for ease of use. It can be modified as long as the
+    format remains the same. In addition there should be no repeats in vertex names
+    or repeats in paths. The graph provided must be connected or behaviour is 
+    undefined. 
+
+    EX:
+    >sh compile
+    >gen_sched.py -g graph.txt -n 100 -o files -i 10
+    >erl
+    >>>loader:start("files/schedules.txt", "graph.txt", "output.txt").
+    >>>ok.
+    >>>Done.
+
+Format of Files
+    All of the files are formatted to be in erlang terms.
+    Graph File:
+       vertex_name1. 
+       vertex_name2. 
+       {vertex_name1, vertex_name2, 3, 5}.
+
+    The graph file contains all the vertices as valid erlang atoms (followed
+    by a '.') followed by the edges. The edges are tuples containing the 
+    two vertices that are connected, followed by the weight of the edge and
+    the capacity of the path in integers.
+
+    Schedules File:
+        'sched1.txt'.
+        'file3.txt'.
+        'ex.txt'.
+
+    The schedules file contains all of the filenames for the different 
+    schedules. If the python script is used this is automatically generated. 
+
+    Schedule File:
+        {0, vertex_name1}. 
+        {10, vertex_name2}. 
+        {20, vertex_name1}. 
+
+    The schedule file contains a persons schedule as a bunch of tuples. The
+    first number is an integer for when the person has to leave and the second
+    is the vertex they will travel to. The vertex is a valid erlang atom
+    and must match what is provided in the graph file. The first tuple's time
+    is thrown away and the location is used as the starting location. In
+    addition because the person uses a dictionary the times do not need to be
+    in increasing order. 
+
+To use the provided visualization file viz.html:
+    Have a correctly formatted graph file titled “graph.txt” in the same 
+    directory as viz.html. Have an output file from the Pedestrian Modeling 
+    simulation named “output.txt".Start a web server that hosts “viz.html”
+    and view the file in a web browser.
+
+    EX: 
+    >python -m SimpleHTTPServer
+    In the directory containing viz.html and opening localhost:8000/viz.html
+    in a web browser.
+
